@@ -16,9 +16,15 @@ const eventColors = {
   INTERNAL_EVENT: "#06b6d4",
 };
 
-export default function CalendarView({ events, departments }) {
+export default function CalendarView({
+  events,
+  departments,
+  initialType = "ALL",
+  lockType = false,
+  hideTypeFilter = false,
+}) {
   const [calendarEvents, setCalendarEvents] = useState([]);
-  const [selectedType, setSelectedType] = useState("ALL");
+  const [selectedType, setSelectedType] = useState(initialType);
   const [selectedDept, setSelectedDept] = useState("ALL");
   const [selectedEvent, setSelectedEvent] = useState(null);
 
@@ -55,18 +61,26 @@ export default function CalendarView({ events, departments }) {
       <div style={{ width: "250px" }}>
         <h3>Filters</h3>
 
-        <label>Event Type</label>
-        <select
-          value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
-        >
-          <option value="ALL">All</option>
-          {Object.keys(eventColors).map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
+        {!hideTypeFilter && (
+  <>
+    <label>Event Type</label>
+    <select
+      value={selectedType}
+      onChange={(e) => setSelectedType(e.target.value)}
+      disabled={lockType}
+    >
+      <option value="ALL">All</option>
+      {Object.keys(eventColors).map((type) => (
+        <option key={type} value={type}>
+          {type}
+        </option>
+      ))}
+    </select>
+
+    <br />
+    <br />
+  </>
+)}
 
         <br />
         <br />
